@@ -18,14 +18,14 @@ from config import apikey
 
 chatStr = ""
 def chat(query):
-  
+
+    global chatStr
     openai.api_key = apikey
 
-    chat += f"Harry : {query} \n Jarvis :"
-
+    chatStr += f"Harry : {query} \n Jarvis :"
     response = openai.Completion.create(
     model="text-davinci-003",
-    prompt= f"Harry : {query} \n Jarvis :",
+    prompt= chatStr,
     temperature=1,
     max_tokens=256,
     top_p=1,
@@ -34,14 +34,16 @@ def chat(query):
     )
 
     try:
-        text += response["choices"][0]["text"]
-        # print(text)
+        chatStr += f"{response['choices'][0]['text']}\n"
+        print(chatStr)
+        say(response['choices'][0]['text'])
+        return response['choices'][0]['text']
 
-        if not os.path.exists("Openai"):
-            os.mkdir("Openai")
+        # if not os.path.exists("Openai"):
+        #     os.mkdir("Openai")
 
-        with open (f"Openai/{''.join(prompt.split('intelligence')[1:]).strip()}.txt", "w") as f:
-            f.write(text)
+        # with open (f"Openai/{''.join(query.split('intelligence')[1:]).strip()}.txt", "w") as f:
+        #     f.write(query)
 
     except Exception as e:
         print("Error occured !", e)
@@ -91,5 +93,12 @@ if __name__ == '__main__':  # it will only be executed when this file is directl
         elif "artificial intelligence" in query.lower():
             ai.ai(query)
 
+        elif "jarvis quit" in query.lower():
+            exit()
+        
+        elif "reset chat" in query.lower():
+            chatStr = ""
+
         else:
+            print("Chatting")
             chat(query)
