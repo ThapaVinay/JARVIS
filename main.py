@@ -11,8 +11,43 @@ We need the following packages to start ->
 import speech_recognition as sr
 import os
 import webbrowser
-import openai
+import openaitext as ai
 import datetime
+import openai
+from config import apikey
+
+chatStr = ""
+def chat(query):
+  
+    openai.api_key = apikey
+
+    chat += f"Harry : {query} \n Jarvis :"
+
+    response = openai.Completion.create(
+    model="text-davinci-003",
+    prompt= f"Harry : {query} \n Jarvis :",
+    temperature=1,
+    max_tokens=256,
+    top_p=1,
+    frequency_penalty=0,
+    presence_penalty=0
+    )
+
+    try:
+        text += response["choices"][0]["text"]
+        # print(text)
+
+        if not os.path.exists("Openai"):
+            os.mkdir("Openai")
+
+        with open (f"Openai/{''.join(prompt.split('intelligence')[1:]).strip()}.txt", "w") as f:
+            f.write(text)
+
+    except Exception as e:
+        print("Error occured !", e)
+
+
+
 
 def say(text):
     os.system(f'say "{text}"')   # say command is used to convert text to speech , we need to install it
@@ -49,8 +84,12 @@ if __name__ == '__main__':  # it will only be executed when this file is directl
             musicPath = "/home/lonewolf/Downloads/AnimePahe_One_Piece_-_972_720p_SubsPlease.mp4"
             os.system(f"open {musicPath}")
 
-        if "time" in query.lower():
+        elif "time" in query.lower():
             strfTime = datetime.datetime.now().strftime("%H:%M:%S")
             say(f"Sir the time is {strfTime}")
 
- 
+        elif "artificial intelligence" in query.lower():
+            ai.ai(query)
+
+        else:
+            chat(query)

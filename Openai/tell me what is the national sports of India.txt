@@ -1,0 +1,5 @@
+OpenAI response for Prompt : Java using artificial intelligence tell me what is the national sports of India 
+ ***********************
+
+
+The national sport of India is field hockey.
