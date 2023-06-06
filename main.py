@@ -39,16 +39,8 @@ def chat(query):
         say(response['choices'][0]['text'])
         return response['choices'][0]['text']
 
-        # if not os.path.exists("Openai"):
-        #     os.mkdir("Openai")
-
-        # with open (f"Openai/{''.join(query.split('intelligence')[1:]).strip()}.txt", "w") as f:
-        #     f.write(query)
-
     except Exception as e:
         print("Error occured !", e)
-
-
 
 
 def say(text):
@@ -93,11 +85,14 @@ if __name__ == '__main__':  # it will only be executed when this file is directl
         elif "artificial intelligence" in query.lower():
             ai.ai(query)
 
-        elif "jarvis quit" in query.lower():
+        elif "jarvis stop" in query.lower():
             exit()
         
         elif "reset chat" in query.lower():
             chatStr = ""
+
+        elif "sorry" in query.lower():
+            say(query)
 
         else:
             print("Chatting")
